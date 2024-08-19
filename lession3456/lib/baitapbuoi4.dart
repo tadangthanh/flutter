@@ -28,18 +28,19 @@ class BaiTapBuoi4HomePage extends StatefulWidget {
 
 class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
   int _counter = 0;
-  late bool isSnt;
+   bool isSnt = false;
   var colors = <MaterialColor>[
     Colors.red,
     Colors.blue,
     Colors.green,
     Colors.yellow
   ];
-
+  late MaterialColor colorSelected;
   void handle() {
     setState(() {
-      _counter++;
     });
+    _counter++;
+
     if (_counter % 2 == 0) {
       Random random = Random();
       // Lấy một màu ngẫu nhiên
@@ -65,13 +66,15 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
         return;
       }
     }
+    setState(() {
+      isSnt = true;
+    })9
+    return;
   }
-  late MaterialColor colorSelected;
   var myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: colorSelected,
         appBar: AppBar(
