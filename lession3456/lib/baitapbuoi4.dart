@@ -28,17 +28,17 @@ class BaiTapBuoi4HomePage extends StatefulWidget {
 
 class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
   int _counter = 0;
-   bool isSnt = false;
+  bool isSnt = false;
   var colors = <MaterialColor>[
     Colors.red,
     Colors.blue,
     Colors.green,
     Colors.yellow
   ];
-  late MaterialColor colorSelected;
+  late MaterialColor colorSelected = Colors.red;
+
   void handle() {
-    setState(() {
-    });
+    setState(() {});
     _counter++;
 
     if (_counter % 2 == 0) {
@@ -48,10 +48,8 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
     }
   }
 
-  void handleCheckSnt(){
-    int n = myController.text.isNotEmpty
-        ? int.parse(myController.text)
-        : 0;
+  void handleCheckSnt() {
+    int n = myController.text.isNotEmpty ? int.parse(myController.text) : 0;
     if (n < 2) {
       setState(() {
         isSnt = true;
@@ -68,9 +66,10 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
     }
     setState(() {
       isSnt = true;
-    })9
+    });
     return;
   }
+
   var myController = TextEditingController();
 
   @override
@@ -85,7 +84,7 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
           child: SafeArea(
               child: Center(
                   child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 "Giá trị hiện tại : $_counter",
@@ -96,6 +95,9 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
                 child: Text("Tăng giá trị"),
               ),
               TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),gapPadding: 10)),
                 controller: myController,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
@@ -105,7 +107,12 @@ class BaiTapBuoi4HomePageState extends State<BaiTapBuoi4HomePage> {
               ),
               Text(isSnt
                   ? "Số ${myController.text} là số nguyên tố"
-                  : "Số ${myController.text} không phải số nguyên tố")
+                  : "Số ${myController.text} không phải số nguyên tố"),
+              Image(
+                image: AssetImage('assets/mattruoc.jpg'),
+                width: 700,
+                height: 200,
+              ),
             ],
           ))),
         ));
