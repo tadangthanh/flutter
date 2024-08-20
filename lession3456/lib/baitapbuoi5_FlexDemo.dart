@@ -68,11 +68,17 @@ class BaiTapBuoi5FlexState extends State<BaiTapBuoi5FlexHomePage> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 5,
-                  child: Container(
-                    color: Colors.green,
-                  ),
+                // SizedBox(
+                //   height: 5,
+                //   child: Container(
+                //     color: Colors.green,
+                //   ),
+                // ),
+                const Divider(
+                   thickness: 5,
+                  indent: 10,
+                  endIndent: 10,
+                  color: Colors.green,
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 50, bottom: 50),
