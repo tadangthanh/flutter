@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'baitapbuoi5_product_detail.dart';
+
 void main() {
   runApp(const BaiTapGridView());
 }
@@ -60,7 +62,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
               IconButton(
                 icon: const Icon(
                   Icons.shopping_cart,
-                  color: Colors.white,
+                  color: Colors.white ,
                 ),
                 tooltip: 'Show Snackbar',
                 onPressed: () {},
@@ -107,7 +109,8 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
   int productCount = 1;
   List<String> product = <String>['Demo', 'product name kk', 'Ao thun'];
   List<String> images = <String>["ao1", "ao2", "ao3"];
-
+  List<double> prices=<double>[92.56,100.92,19.2];
+  List<String> descriptions =<String>["Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, w","t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the li","Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words"];
   Widget buildGirdProduct() {
     return GridView.builder(
       primary: false,
@@ -125,8 +128,18 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
           ),
           child: Stack(
             children: [
-              Image(
-                image: AssetImage("assets/${images[index]}.png"),
+              InkWell(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BaiTapBuoi5ProductDetail(desc: descriptions[index],nameProduct: product[index],image: images[index],price: prices[index],),
+                    ),
+                  );
+                },
+                 child:  Image(
+                    image: AssetImage("assets/${images[index]}.png"),
+                  )
               ),
               Positioned(
                   bottom: 0,
@@ -144,14 +157,14 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                           Expanded(
                             child: IconButton(
                                 onPressed: () {},
-                                icon: Icon(Icons.favorite_border),
-                                color: Color(0xFF9C27B0)),
+                                icon: const Icon(Icons.favorite_border),
+                                color: const Color(0xFF9C27B0)),
                           ),
                           Expanded(
                               child: Center(
                             child: Text(
-                              "${product[index]}",
-                              style: TextStyle(color: Colors.white),
+                              product[index],
+                              style: const TextStyle(color: Colors.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -163,8 +176,8 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                                     productCount++;
                                   });
                                 },
-                                icon: Icon(Icons.shopping_cart),
-                                color: Color(0xFF9C27B0)),
+                                icon: const Icon(Icons.shopping_cart),
+                                color: const Color(0xFF9C27B0)),
                           )
                         ],
                       ),
