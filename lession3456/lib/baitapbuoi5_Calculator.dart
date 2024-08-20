@@ -67,11 +67,12 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                   width: 200,
                   child: TextField(
                     controller: myControllerA,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             gapPadding: 10),
-                        hintText: "Nhập số A"),
+                        labelText: "Nhập số A"),
                   ),
                 ),
                 Container(
