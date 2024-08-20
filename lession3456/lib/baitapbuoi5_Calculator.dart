@@ -53,7 +53,7 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
           title: const Text("Calculator"),
         ),
         body: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: SafeArea(
             child: Center(
                 child: Column(
@@ -85,7 +85,7 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                         hintText: "Nhập số B"),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("Kết quả : $result", style: TextStyle(fontSize: 40)),
@@ -94,7 +94,7 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                     Expanded(
                         child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero),
                         backgroundColor: Colors.blue, // Màu nền của nút
                       ),
@@ -125,14 +125,14 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                         style: TextStyle(color: Colors.white),
                       ),
                     )),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.zero), // Màu nền của nút
                         ),
@@ -144,11 +144,11 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: Text('Lỗi'),
-                                content: Text('Vui lòng nhập một số hợp lệ.'),
+                                title: const Text('Lỗi'),
+                                content: const Text('Vui lòng nhập một số hợp lệ.'),
                                 actions: [
                                   TextButton(
-                                    child: Text('Đóng'),
+                                    child: const Text('Đóng'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
@@ -162,14 +162,14 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                             style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                         child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero), // Màu nền của nút
                       ),
                       onPressed: () {
@@ -180,11 +180,11 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Lỗi'),
-                              content: Text('Vui lòng nhập một số hợp lệ.'),
+                              title: const Text('Lỗi'),
+                              content: const Text('Vui lòng nhập một số hợp lệ.'),
                               actions: [
                                 TextButton(
-                                  child: Text('Đóng'),
+                                  child: const Text('Đóng'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -197,14 +197,14 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                       child: const Text("x",
                           style: TextStyle(color: Colors.white)),
                     )),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
                         child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepOrangeAccent,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero), // Màu nền của nút
                       ),
                       onPressed: () {
@@ -215,11 +215,12 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Lỗi'),
-                              content: Text('Vui lòng nhập một số hợp lệ.'),
+                              title: const Text('Lỗi'),
+                              content:
+                                  const Text('Vui lòng nhập một số hợp lệ.'),
                               actions: [
                                 TextButton(
-                                  child: Text('Đóng'),
+                                  child: const Text('Đóng'),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },

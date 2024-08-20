@@ -29,41 +29,42 @@ class BaiTapBuoi5FlexState extends State<BaiTapBuoi5FlexHomePage> {
               child: Text("Flex Demo - CodeFresher",
                   style: TextStyle(fontSize: 30)))),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: SafeArea(
             child: SingleChildScrollView(
-              child: Center(
-                        child: Column(
+          child: Center(
+            child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 50, bottom: 50),
+                  margin: const EdgeInsets.only(top: 50, bottom: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
                         child: Container(
                           width: 170,
-                          child: Image(image: AssetImage("assets/mattruoc.jpg")),
+                          child: const Image(
+                              image: AssetImage("assets/mattruoc.jpg")),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Flexible(
+                      const Flexible(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Lập trình Flutter",
-                                style: TextStyle(fontSize: 25),
-                              ),
-                              Text(
-                                "Thực chiến dự án app mobile 2022",
-                                style: TextStyle(fontSize: 18),
-                                textAlign: TextAlign.center,
-                              )
-                            ],
-                          ))
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Lập trình Flutter",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                          Text(
+                            "Thực chiến dự án app mobile 2022",
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ))
                     ],
                   ),
                 ),
@@ -74,41 +75,42 @@ class BaiTapBuoi5FlexState extends State<BaiTapBuoi5FlexHomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 50, bottom: 50),
+                  margin: const EdgeInsets.only(top: 50, bottom: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Expanded(
+                      const Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Lập trình Android",
-                                style: TextStyle(fontSize: 25),
-                              ),
-                              Text(
-                                "Java + Kotlin",
-                                style: TextStyle(fontSize: 18),
-                                textAlign: TextAlign.center,
-                              )
-                            ],
-                          )),
-                      SizedBox(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Lập trình Android",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                          Text(
+                            "Java + Kotlin",
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      )),
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: Container(
                           width: 170,
-                          child: Image(image: AssetImage("assets/casio.jpg")),
+                          child: const Image(
+                              image: AssetImage("assets/casio.jpg")),
                         ),
                       )
                     ],
                   ),
                 )
               ],
-                        ),
-                      ),
-            )),
+            ),
+          ),
+        )),
       ),
     );
   }
