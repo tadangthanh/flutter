@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lession3456/lession4_screen.dart';
 
 void main() {
   runApp(BaiTapBuoi5());
 }
 
 class BaiTapBuoi5 extends StatelessWidget {
+  const BaiTapBuoi5({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,7 +52,7 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Calculator"),
+          title: const Text("lator"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
@@ -236,6 +238,12 @@ class Buoi5HomePageState extends State<BaiTapBuoi5HomePage> {
                     ))
                   ],
                 ),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ExpandedApp()),
+                  );
+                }, child:const Text("Go to screen 1"))
               ],
             )),
           ),

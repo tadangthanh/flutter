@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'listview_screen.dart';
+
 void main() => runApp(const ExpandedApp());
 
 class ExpandedApp extends StatelessWidget {
@@ -8,6 +10,11 @@ class ExpandedApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          dividerTheme: const DividerThemeData(
+        thickness: 3,
+        color: Colors.green,
+      )),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Expanded Column Sample'),
@@ -74,8 +81,14 @@ class ExpandedExample extends StatelessWidget {
             ),
           ),
           buildDecorationText(),
-
-
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ListViewScreen()),
+                );
+              },
+              child: const Text("Go to screen 2"))
         ],
       ),
     );
@@ -108,7 +121,8 @@ Widget buildStack() {
     ],
   );
 }
-Widget buildDecorationText(){
+
+Widget buildDecorationText() {
   return SizedBox(
     width: 250,
     height: 250,
