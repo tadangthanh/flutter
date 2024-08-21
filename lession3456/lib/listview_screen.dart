@@ -139,7 +139,6 @@ class ListViewScreenState extends State<ListViewScreen> {
         separatorBuilder: (BuildContext context, int index) {
           return const Divider();
         },
-        // padding: const EdgeInsets.all(8),
         itemCount: entries.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
