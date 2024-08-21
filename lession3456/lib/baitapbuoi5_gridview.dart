@@ -128,10 +128,8 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       ),
       itemCount: product.length,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(15.0),
           child: Stack(
             children: [
               InkWell(
