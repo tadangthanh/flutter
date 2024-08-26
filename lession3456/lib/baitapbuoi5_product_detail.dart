@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lession3456/model/ProductItem.dart';
 
 class BaiTapBuoi5ProductDetail extends StatefulWidget {
-  final String nameProduct;
-  final String image;
-  final double price;
-  final String desc;
+  final ProductItem productItem;
 
-  const BaiTapBuoi5ProductDetail(
-      {super.key,
-      required this.nameProduct,
-      required this.image,
-      required this.price,
-      required this.desc});
+  const BaiTapBuoi5ProductDetail({super.key, required this.productItem});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +13,7 @@ class BaiTapBuoi5ProductDetail extends StatefulWidget {
 }
 
 class BaiTapBuoi5ProductDetailState extends State<BaiTapBuoi5ProductDetail> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +29,7 @@ class BaiTapBuoi5ProductDetailState extends State<BaiTapBuoi5ProductDetail> {
                 children: [
                   Stack(
                     children: [
-                      Image(image: AssetImage("assets/${widget.image}.png")),
+                      Image(image: NetworkImage(widget.productItem.image)),
                       Positioned(
                           bottom: 0,
                           left: 0,
@@ -44,7 +38,7 @@ class BaiTapBuoi5ProductDetailState extends State<BaiTapBuoi5ProductDetail> {
                             margin: const EdgeInsets.symmetric(vertical: 20),
                             child: Center(
                               child: Text(
-                                widget.nameProduct,
+                                widget.productItem.name,
                                 style: const TextStyle(
                                     color: Colors.white, fontSize: 40),
                               ),
@@ -54,14 +48,14 @@ class BaiTapBuoi5ProductDetailState extends State<BaiTapBuoi5ProductDetail> {
                   ),
                   Center(
                     child: Text(
-                      "\$ ${widget.price}",
+                      "\$ ${widget.productItem.price}",
                       style: const TextStyle(
                           fontSize: 45, color: Color(0xFF9B9B9B)),
                     ),
                   ),
                   Center(
                     child: Text(
-                      "\$ ${widget.desc}",
+                      "\$ ${widget.productItem.description}",
                       style: const TextStyle(fontSize: 20, color: Colors.black),
                     ),
                   ),
