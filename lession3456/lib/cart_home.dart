@@ -93,7 +93,10 @@ class CartHomeState extends State<CartHome> {
                             style: const TextStyle(color: Color(0xffd7abdf)),
                           )),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          print("total: ${total}");// Ẩn bàn phím
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.purple,
                           shape: const RoundedRectangleBorder(
