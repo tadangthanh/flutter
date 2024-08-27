@@ -196,7 +196,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       description: 'This is the description for product 2.',
     ),
     ProductItem.name(
-      id: 1,
+      id: 3,
       name: 'Product 3',
       image:
           'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
@@ -204,7 +204,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       description: 'This is the description for product 1.',
     ),
     ProductItem.name(
-      id: 2,
+      id: 4,
       name: 'Product 4',
       image:
           'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
