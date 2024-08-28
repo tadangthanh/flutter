@@ -2,32 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:lession3456/model/ProductItem.dart';
 import 'package:lession3456/shop_product_update_screen.dart';
 
-void main() {
-  runApp(FlowUI());
-}
+import 'baitapbuoi5_gridview.dart';
+
+// void main() {
+//   runApp(FlowUI());
+// }
 
 class FlowUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "FLow UI",
-      home: FlowUIHomePage(),
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/add': (context) => const EditProductHomePage(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == "/edit") {
-          return MaterialPageRoute<void>(
-              settings: settings,
-              builder: (BuildContext context) {
-                return const EditProductHomePage();
-              });
-        } else {
-          return null;
-        }
-      },
-    );
+    // return MaterialApp(
+    //   title: "FLow UI",
+    //   home: FlowUIHomePage(),
+    //   debugShowCheckedModeBanner: false,
+    //   routes: <String, WidgetBuilder>{
+    //     '/add': (context) => const EditProductHomePage(),
+    //   },
+    //   onGenerateRoute: (settings) {
+    //     if (settings.name == "/edit") {
+    //       return MaterialPageRoute<void>(
+    //           settings: settings,
+    //           builder: (BuildContext context) {
+    //             return const EditProductHomePage();
+    //           });
+    //     } else {
+    //       return null;
+    //     }
+    //   },
+    // );
+    return FlowUIHomePage();
   }
 }
 
@@ -51,6 +54,7 @@ class FlowUIHomePageState extends State<FlowUIHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: buildMenu(context),
         appBar: AppBar(
           toolbarHeight: 80,
           flexibleSpace: const Padding(

@@ -4,13 +4,15 @@ class ProductItem {
   final String image;
   final double price;
   final String description;
+  int quantity = 1;
 
-  ProductItem.name(
-      {required this.id,
-      required this.name,
-      required this.image,
-      required this.price,
-      required this.description});
+  ProductItem.name({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.price,
+    required this.description,
+  });
 
   // Overriding == operator and hashCode to compare ProductItem instances
   @override
@@ -19,6 +21,15 @@ class ProductItem {
     return other is ProductItem && other.id == id;
   }
 
+  void incrementQuantity() {
+    ++quantity;
+  }
+  void decrementQuantity() {
+    --quantity;
+  }
+  void setQuantity(int q){
+    quantity=q;
+  }
   @override
   int get hashCode => id.hashCode;
 }

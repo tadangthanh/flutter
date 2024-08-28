@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lession3456/FlowUI.dart';
 import 'package:lession3456/cart_home.dart';
 import 'package:lession3456/model/ProductItem.dart';
+import 'package:lession3456/shop_product_update_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'baitapbuoi5_product_detail.dart';
 
@@ -13,25 +16,44 @@ class BaiTapGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const BaiTapBuoi5GridHomePage(
-        title: "MyShop",
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<MyCart>(
+          create: (context) => MyCart(),
+        ),
+        ChangeNotifierProvider<SelectedMenu>(
+          create: (context) => SelectedMenu(),
+        )
+      ],
+      child: MaterialApp(
+        home: const BaiTapBuoi5GridHomePage(
+          title: "MyShop",
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: <String, WidgetBuilder>{
+          '/cart': (context) => CartHome(),
+          '/add': (context) => const EditProductHomePage(),
+          '/productList': (context) => FlowUI(),
+          '/home': (context) => const BaiTapGridView(),
+        },
+        onGenerateRoute: (settings) {
+          if (settings.name == "/cart") {
+            return MaterialPageRoute<void>(
+                settings: settings,
+                builder: (BuildContext context) {
+                  return CartHome();
+                });
+          } else if (settings.name == "/edit") {
+            return MaterialPageRoute<void>(
+                settings: settings,
+                builder: (BuildContext context) {
+                  return const EditProductHomePage();
+                });
+          } else {
+            return null;
+          }
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{
-        '/cart': (context) => CartHome(),
-      },
-      onGenerateRoute: (settings) {
-        if (settings.name == "/cart") {
-          return MaterialPageRoute<void>(
-              settings: settings,
-              builder: (BuildContext context) {
-                return CartHome();
-              });
-        } else {
-          return null;
-        }
-      },
     );
   }
 }
@@ -48,53 +70,11 @@ class BaiTapBuoi5GridHomePage extends StatefulWidget {
 }
 
 class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  Widget buildMenu(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text('Drawer Header'),
-          ),
-          ListTile(
-            selected: _selectedIndex == 1,
-            title: const Text('Item 1'),
-            onTap: () {
-              _onItemTapped(1);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            selected: _selectedIndex == 2,
-            title: const Text('Item 2'),
-            onTap: () {
-              _onItemTapped(2);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         drawer: buildMenu(context),
-        // endDrawer: buildCartHome(context),
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           leading: Builder(
@@ -105,7 +85,9 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
-                tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+                tooltip: MaterialLocalizations
+                    .of(context)
+                    .openAppDrawerTooltip,
               );
             },
           ),
@@ -127,12 +109,8 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                       color: Colors.white,
                     ),
                     tooltip: 'Show Snackbar',
-                    onPressed: () async {
-                      final result = await Navigator.pushNamed(context, "/cart",
-                          arguments: cartList) as Map<ProductItem, int>;
-                      setState(() {
-                        cartList = result;
-                      });
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/cart");
                     },
                   );
                 }),
@@ -150,14 +128,16 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                       minHeight: 16,
                     ),
                     child: Center(
-                      child: Text(
-                        "${cartList.length}",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                      child: Consumer<MyCart>(builder: (context, value, child) {
+                        return Text(
+                          "${value.totalProduct}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      }),
                     ),
                   ),
                 )
@@ -177,13 +157,14 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
   }
 
   List<ProductItem> productFavorite = <ProductItem>[];
-  Map<ProductItem, int> cartList = {};
+
+  // Map<ProductItem, int> cartList = {};
   List<ProductItem> products = [
     ProductItem.name(
       id: 1,
       name: 'Product 1',
       image:
-          'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
+      'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
       price: 29.99,
       description: 'This is the description for product 1.',
     ),
@@ -191,7 +172,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       id: 2,
       name: 'Product 2',
       image:
-          'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
+      'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
       price: 59.99,
       description: 'This is the description for product 2.',
     ),
@@ -199,7 +180,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       id: 3,
       name: 'Product 3',
       image:
-          'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
+      'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
       price: 29.99,
       description: 'This is the description for product 1.',
     ),
@@ -207,7 +188,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
       id: 4,
       name: 'Product 4',
       image:
-          'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
+      'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
       price: 59.99,
       description: 'This is the description for product 2.',
     ),
@@ -233,9 +214,10 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BaiTapBuoi5ProductDetail(
-                          productItem: products[index],
-                        ),
+                        builder: (context) =>
+                            BaiTapBuoi5ProductDetail(
+                              productItem: products[index],
+                            ),
                       ),
                     );
                   },
@@ -275,25 +257,57 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                           ),
                           Expanded(
                               child: Center(
-                            child: Text(
-                              products[index].name,
-                              style: const TextStyle(color: Colors.white),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )),
+                                child: Text(
+                                  products[index].name,
+                                  style: const TextStyle(color: Colors.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )),
                           Expanded(
-                            child: IconButton(
-                                onPressed: () {
-                                  if (cartList[products[index]] == null) {
-                                    setState(() {
-                                      cartList[products[index]] = 1;
-                                    });
-                                  }
-                                },
-                                icon: const Icon(Icons.shopping_cart),
-                                color: const Color(0xFF9C27B0)),
-                          )
+                              child: Stack(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Provider.of<MyCart>(context, listen: false).addProduct(products[index]);
+                                      },
+                                      icon: const Icon(Icons.shopping_cart),
+                                      color: const Color(0xFF9C27B0)),
+                                  Positioned(
+                                    top: 5,
+                                    right: 20,
+                                    child: Builder(builder: (context) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(1),
+                                        decoration: BoxDecoration(
+                                          color: Colors.deepPurple,
+                                          borderRadius: BorderRadius.circular(
+                                              10),
+                                        ),
+                                        constraints: const BoxConstraints(
+                                          minWidth: 16,
+                                          minHeight: 16,
+                                        ),
+                                        child: Center(
+                                            child: Consumer<MyCart>(
+                                                builder: (context, value,
+                                                    child) {
+                                                  return Text(
+                                                    "${value.totalQuantity(
+                                                        products[index])}",
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  );
+                                                })
+                                        ),
+                                      );
+                                    }),
+                                  )
+                                ],
+                              ))
                         ],
                       ),
                     ),
@@ -303,5 +317,118 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
         );
       },
     );
+  }
+}
+
+Widget buildMenu(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      // Important: Remove any padding from the ListView.
+      padding: EdgeInsets.zero,
+      children: [
+        const DrawerHeader(
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
+          child: Text('Drawer Header'),
+        ),
+        Consumer<SelectedMenu>(builder: (context, selected, child) {
+          return ListTile(
+            selected: selected.selected == 1,
+            title: const Text('Shop List'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/home");
+              Provider.of<SelectedMenu>(context, listen: false).setSelected(1);
+            },
+          );
+        }),
+        Consumer<SelectedMenu>(builder: (context, selected, child) {
+          return ListTile(
+            selected: selected.selected == 2,
+            title: const Text('Product List'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, "/productList");
+              Provider.of<SelectedMenu>(context, listen: false).setSelected(2);
+            },
+          );
+        }),
+      ],
+    ),
+  );
+}
+
+class SelectedMenu extends ChangeNotifier {
+  int _selected = 1;
+
+  int get selected => _selected;
+
+  void setSelected(int selected) {
+    _selected = selected;
+    notifyListeners();
+  }
+}
+
+class MyCart extends ChangeNotifier {
+  List<ProductItem> products = [];
+
+  double get totalPrice {
+    double total = 0;
+    for (var p in products) {
+      total += p.price * p.quantity; // Tính tổng giá dựa trên số lượng
+    }
+    return total;
+  }
+
+  int get totalProduct => products.length;
+
+  totalQuantity(ProductItem p) {
+    int index = products.indexOf(p);
+    if (index != -1) {
+      return products[index].quantity;
+    }
+    return 0;
+  }
+
+  void incrementQuantity(ProductItem p) {
+    int index = products.indexOf(p);
+    if (index != -1) {
+      // Kiểm tra nếu sản phẩm tồn tại
+      products[index].incrementQuantity();
+      notifyListeners();
+    }
+  }
+
+  void decrementQuantity(ProductItem p) {
+    int index = products.indexOf(p);
+    if (index != -1) {
+      // Kiểm tra nếu sản phẩm tồn tại
+      products[index].decrementQuantity();
+      notifyListeners();
+    }
+  }
+
+  void setQuantity(ProductItem p, int quantity) {
+    int index = products.indexOf(p);
+    if (index != -1) {
+      // Kiểm tra nếu sản phẩm tồn tại
+      products[index].setQuantity(quantity);
+      notifyListeners();
+    }
+  }
+
+  void addProduct(ProductItem p) {
+    int index = products.indexOf(p);
+    if (index == -1) {
+      // Nếu sản phẩm chưa có trong giỏ hàng, thêm vào danh sách
+      products.add(p);
+    }
+    notifyListeners();
+  }
+
+  void removeProduct(ProductItem p) {
+    products.remove(p);
+    notifyListeners();
   }
 }
