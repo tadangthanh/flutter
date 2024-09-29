@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lession3456/baitapbuoi5_gridview.dart';
+import 'package:lession3456/model/ProductItem.dart';
 import 'package:provider/provider.dart';
 
 class CartHome extends StatefulWidget {
@@ -13,85 +14,136 @@ class CartHomeState extends State<CartHome> {
   @override
   Widget build(BuildContext context) {
     MyCart myCart = Provider.of<MyCart>(context, listen: false);
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text(
-            "Your Cart",
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.purple,
+    Delete delete = Delete();
+    Trash trash = Trash();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => delete,
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Center(
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 0,
-                            blurRadius: 0,
-                            offset: const Offset(
-                                0, 1), // changes position of shadow
-                          ),
-                        ]),
-                    child: Row(
-                      children: [
-                        const Expanded(child: Text("Total")),
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.purple,
-                              borderRadius: BorderRadius.circular(20),
+        ChangeNotifierProvider(create: (context) => trash)
+      ],
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: const Text(
+              "Your Cart",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.purple,
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 0,
+                              blurRadius: 0,
+                              offset: const Offset(
+                                  0, 1), // changes position of shadow
                             ),
-                            child: Consumer<MyCart>(
-                                builder: (context, cart, child) {
-                              return Text(
-                                "\$${cart.totalPrice}",
-                                style:
-                                    const TextStyle(color: Color(0xffd7abdf)),
+                          ]),
+                      child: Row(
+                        children: [
+                          const Expanded(child: Text("Total")),
+                          Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.purple,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Consumer<MyCart>(
+                                  builder: (context, cart, child) {
+                                return Text(
+                                  "\$${cart.totalPrice}",
+                                  style:
+                                      const TextStyle(color: Color(0xffd7abdf)),
+                                );
+                              })),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                FocusScope.of(context)
+                                    .unfocus(); // ẩn bàn phím khi click nút ordernow
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                              ),
+                              child: const Text(
+                                "ORDER NOW",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Builder(builder: (context) {
+                            return Consumer<Delete>(
+                                builder: (context, value, child) {
+                              return ElevatedButton(
+                                onPressed: () {
+                                  FocusScope.of(context).unfocus();
+                                  value.setIsDelete(!value.isDelete);
+                                  if (!value.isDelete && trash.trash.isNotEmpty) {
+                                    myCart.removeAllProduct(trash.trash);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content:
+                                          const Text("Deleted selected items"),
+                                      action: SnackBarAction(
+                                          label: "Undo",
+                                          onPressed: () {
+                                            myCart.addAllProduct(trash.trash);
+                                            trash.clear();
+                                          }),
+                                    ));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  side: const BorderSide(
+                                      width: 2.0, color: Colors.red),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5))),
+                                ),
+                                child: Text(
+                                  !value.isDelete
+                                      ? "Delete"
+                                      : "Delete Selected",
+                                  style: const TextStyle(color: Colors.red),
+                                ),
                               );
-                            })),
-                        ElevatedButton(
-                          onPressed: () {
-                            FocusScope.of(context)
-                                .unfocus(); // ẩn bàn phím khi click nút ordernow
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.purple,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                          ),
-                          child: const Text(
-                            "ORDER NOW",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
+                            });
+                          })
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(child: buildMapCartView(myCart)),
-                ],
+                    Expanded(child: buildMapCartView(myCart)),
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }
 
@@ -102,6 +154,8 @@ bool isNonNegativeNumeric(String input) {
 
 Widget buildMapCartView(MyCart myCart) {
   return Consumer<MyCart>(builder: (context, value, child) {
+    Delete delete = Provider.of<Delete>(context, listen: true);
+    Trash trash = Provider.of<Trash>(context, listen: true);
     return ListView.builder(
         itemCount: myCart.products.length,
         itemBuilder: (BuildContext context, int index) {
@@ -122,8 +176,28 @@ Widget buildMapCartView(MyCart myCart) {
                     ),
                   ]),
               child: ListTile(
-                  leading: CircleAvatar(
-                    child: Image.network(myCart.products[index].image),
+                  leading: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      delete.isDelete
+                          ? Consumer<Delete>(builder: (context, value, child) {
+                              return Checkbox(
+                                  value: trash.trash
+                                      .contains(myCart.products[index]),
+                                  onChanged: (bool? value) {
+                                    !trash.trash
+                                            .contains(myCart.products[index])
+                                        ? trash
+                                            .addProduct(myCart.products[index])
+                                        : trash.removeProduct(
+                                            myCart.products[index]);
+                                    // delete.setIsDelete(true);
+                                  });
+                            })
+                          : Container(),
+                      CircleAvatar(
+                          child: Image.network(myCart.products[index].image)),
+                    ],
                   ),
                   title: Text(myCart.products[index].name),
                   subtitle: Text("Total: \$${myCart.products[index].price}"),
@@ -283,4 +357,36 @@ Widget buildMapCartView(MyCart myCart) {
           );
         });
   });
+}
+
+class Delete extends ChangeNotifier {
+  bool isDelete = false;
+
+  bool get delete => isDelete;
+
+  void setIsDelete(bool value) {
+    isDelete = value;
+    notifyListeners();
+  }
+}
+
+class Trash extends ChangeNotifier {
+  List<ProductItem> trash = [];
+
+  List<ProductItem> get listTrash => trash;
+
+  void addProduct(ProductItem p) {
+    trash.add(p);
+    notifyListeners();
+  }
+
+  void removeProduct(ProductItem p) {
+    trash.remove(p);
+    notifyListeners();
+  }
+
+  void clear() {
+    trash.clear();
+    notifyListeners();
+  }
 }

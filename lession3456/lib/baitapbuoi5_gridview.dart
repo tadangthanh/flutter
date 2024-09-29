@@ -157,8 +157,6 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
   }
 
   List<ProductItem> productFavorite = <ProductItem>[];
-
-  // Map<ProductItem, int> cartList = {};
   List<ProductItem> products = [
     ProductItem.name(
       id: 1,
@@ -269,6 +267,7 @@ class BaiTapBuoi5GridState extends State<BaiTapBuoi5GridHomePage> {
                                 children: [
                                   IconButton(
                                       onPressed: () {
+                                        products[index].quantity==0?products[index].quantity=1:"";
                                         Provider.of<MyCart>(context, listen: false).addProduct(products[index]);
                                       },
                                       icon: const Icon(Icons.shopping_cart),
@@ -376,7 +375,7 @@ class MyCart extends ChangeNotifier {
   double get totalPrice {
     double total = 0;
     for (var p in products) {
-      total += p.price * p.quantity; // Tính tổng giá dựa trên số lượng
+      total += p.price * p.quantity;
     }
     return total;
   }
@@ -394,7 +393,6 @@ class MyCart extends ChangeNotifier {
   void incrementQuantity(ProductItem p) {
     int index = products.indexOf(p);
     if (index != -1) {
-      // Kiểm tra nếu sản phẩm tồn tại
       products[index].incrementQuantity();
       notifyListeners();
     }
@@ -403,7 +401,6 @@ class MyCart extends ChangeNotifier {
   void decrementQuantity(ProductItem p) {
     int index = products.indexOf(p);
     if (index != -1) {
-      // Kiểm tra nếu sản phẩm tồn tại
       products[index].decrementQuantity();
       notifyListeners();
     }
@@ -412,7 +409,6 @@ class MyCart extends ChangeNotifier {
   void setQuantity(ProductItem p, int quantity) {
     int index = products.indexOf(p);
     if (index != -1) {
-      // Kiểm tra nếu sản phẩm tồn tại
       products[index].setQuantity(quantity);
       notifyListeners();
     }
@@ -421,7 +417,6 @@ class MyCart extends ChangeNotifier {
   void addProduct(ProductItem p) {
     int index = products.indexOf(p);
     if (index == -1) {
-      // Nếu sản phẩm chưa có trong giỏ hàng, thêm vào danh sách
       products.add(p);
     }
     notifyListeners();
@@ -429,6 +424,14 @@ class MyCart extends ChangeNotifier {
 
   void removeProduct(ProductItem p) {
     products.remove(p);
+    notifyListeners();
+  }
+  void removeAllProduct(List<ProductItem> listProduct) {
+    products.removeWhere((product) => listProduct.contains(product));
+    notifyListeners();
+  }
+  void addAllProduct(List<ProductItem> listProduct){
+    products.addAll(listProduct);
     notifyListeners();
   }
 }
