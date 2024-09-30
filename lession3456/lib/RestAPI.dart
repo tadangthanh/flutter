@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:lession3456/Album.dart';
+import 'package:lession3456/apiservice.dart';
 
 void main() => runApp(const MyApp());
 
@@ -12,48 +11,34 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class Album {
-  final int userId;
-  final int id;
-  final String title;
-
-  const Album({
-    required this.userId,
-    required this.id,
-    required this.title,
-  });
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'userId': int userId,
-        'id': int id,
-        'title': String title,
-      } =>
-        Album(
-          userId: userId,
-          id: id,
-          title: title,
-        ),
-      _ => throw const FormatException('Failed to load album.'),
-    };
-  }
-}
-
 class _MyAppState extends State<MyApp> {
-  late Future<List<Album>> futureAlbums;
-  late List<Album> albums;
+  List<Album> albums = [];
+  final titleController = TextEditingController();
+  final ApiService apiService = ApiService();
+
   @override
   void initState() {
     super.initState();
-    // fetchAlbums().then((albums){
-    //   this.albums=albums;
-    // }).catchError((error){
-    //   print(error);
-    // });
-    futureAlbums = fetchAlbums();
+    _loadAlbums();
   }
 
+  Future<void> _loadAlbums() async {
+    try {
+      albums = await apiService.fetchAlbums();
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
+  Future<void> _createAlbum(String title) async {
+    try {
+      final album = await apiService.createAlbums(title);
+      albums.add(album);
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,40 +50,39 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Fetch Data Example'),
         ),
-        body: Center(
-          child: FutureBuilder<List<Album>>(
-            future: futureAlbums,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-               return listViewShowData(snapshot.data!);
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          ),
+        body: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter your album title',
+                      ),
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _createAlbum(titleController.text);
+                  },
+                  child: const Text('Create Data'),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Center(
+                child: listViewShowData(albums),
+              ),
+            ),
+          ],
         ),
       ),
     );
-  }
-}
-
-Future<List<Album>> fetchAlbums() async {
-  final response =
-      await http.get(Uri.parse('https://jsonplaceholder.typicode.com/albums'));
-
-  if (response.statusCode == 200) {
-    // Parse the JSON response
-    List<dynamic> jsonList = jsonDecode(response.body);
-    // Convert JSON to List<Album>
-    List<Album> albums = jsonList.map((json) => Album.fromJson(json)).toList();
-    return albums;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
   }
 }
 

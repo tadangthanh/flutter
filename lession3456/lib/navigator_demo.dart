@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 void main() {
   runApp(NavigatorDemo());
 }
-
+class Routers {
+  static const String screen2 = "/screen2";
+}
 class NavigatorDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,8 +14,8 @@ class NavigatorDemo extends StatelessWidget {
       title: "Navigator demo",
       home: NavigatorHome(),
       // neu o day tim thay se nhay vao day truoc con k thi nhay vao ham onGenerate
-      routes: <String, WidgetBuilder>{
-        '/screen2': (context) => Screen2(),
+      routes: {
+        Routers.screen2: (context) => Screen2(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == "/screen2") {
@@ -51,12 +53,14 @@ class NavigatorHomeState extends State<NavigatorHome> {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Screen2(),
                       ),
-                    );
+                    ).then((value) {
+                      print(value);
+                    });
                   },
                   child: const Text(
                     "cach 1",
@@ -65,7 +69,7 @@ class NavigatorHomeState extends State<NavigatorHome> {
               Divider(),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/screen2");
+                    Navigator.pushNamed(context, "/screen2",arguments: "xin chao");
                   },
                   child: const Text(
                     "cach 2",
@@ -92,22 +96,14 @@ class NavigatorHomeState extends State<NavigatorHome> {
 }
 
 class Screen2 extends StatelessWidget {
-  final Object? param;
 
-  const Screen2({super.key, this.param});
 
   @override
   Widget build(BuildContext context) {
     final _param = ModalRoute.of(context)?.settings.arguments as String?;
 
-    return PopScope(
-      canPop: true, // neu de false thi an nut return cua may se k ve dc, con btn tu tao thi dc
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        // if (!Navigator.canPop(context)) {
-        //   SystemNavigator.pop();
-        // }
-      },
-      child: Scaffold(
+
+      return Scaffold(
         appBar: AppBar(
             title: const Text(
           "Man hinh 2",
@@ -131,7 +127,7 @@ class Screen2 extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
+
   }
 }
