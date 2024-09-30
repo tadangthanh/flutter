@@ -13,18 +13,23 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<Album> albums = [];
+  late Future<List<Album>> futureAlbums;
   final titleController = TextEditingController();
   final ApiService apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
+    futureAlbums = apiService.fetchAlbums();
     _loadAlbums();
   }
+
+
 
   Future<void> _loadAlbums() async {
     try {
       albums = await apiService.fetchAlbums();
+      print("lenght: ${albums.length}");
       setState(() {});
     } catch (e) {
       print(e);
@@ -38,6 +43,12 @@ class _MyAppState extends State<MyApp> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> _refresh() async {
+    await _loadAlbums();
+    setState(() {
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -72,6 +83,7 @@ class _MyAppState extends State<MyApp> {
                   },
                   child: const Text('Create Data'),
                 ),
+                ElevatedButton(onPressed: ()=>_refresh(), child: Text("Refresh")),
               ],
             ),
             Expanded(
