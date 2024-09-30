@@ -50,7 +50,7 @@ _buildHomeScreen() {
         Container(
           padding: const EdgeInsets.all(20),
           color: Colors.green[200],
-          // hamm nay se rebuild lai ke ca ko dung toi data cua provider
+          // phan code trong builder se rebuild lai ke ca ko dung toi data cua provider
           // child: Consumer<MyModel>(builder: (context, myModal, child) {
           //   return ElevatedButton(
           //       onPressed: () {
@@ -84,6 +84,7 @@ _buildHomeScreen() {
             builder: (context, mymodel, child) {
               return Text(mymodel.text);
             },
+
           ),
         ),
       ],

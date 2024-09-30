@@ -35,7 +35,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final bloc = RemoteBloc(); // khởi tạo bloc  <=== new
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
